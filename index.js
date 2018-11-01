@@ -47,8 +47,27 @@ async function init () {
               title: 'home'
             })
         }
+      }) 
+     // ## Ruta para registro
+      server.route({
+        method: 'GET',
+        path: '/register',
+        handler: (req, h) => {
+            return h.view('register', {
+              title: 'Registro'
+            })
+        }
       })
-    
+      // ## Ruta para crear un Usuario
+      server.route({
+        method: 'POST',
+        path: '/create-user',
+        handler: (req, h) => {
+          console.log(req.payload)
+          return 'La vista esta creada'
+        }
+      })
+
       server.route({
         method: 'GET',
         // Ruta comodin 
