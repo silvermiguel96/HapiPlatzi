@@ -4,6 +4,7 @@ const Hapi = require('hapi')
 const handlerbars = require('handlebars')
 const inert = require('inert')
 const path = require('path')
+const routes = require('./routes')
 const vision = require('vision')
 
 const server = Hapi.server({
@@ -21,6 +22,7 @@ const server = Hapi.server({
 async function init () {
   
   try {
+
       // funcion de abuelo para el register
     await server.register(inert)
     await server.register(vision)
@@ -36,51 +38,9 @@ async function init () {
         layoutPath: 'views'
         
     })
-    server.route({
-        method: 'GET',
-        path: '/',
-        // El metodo enfrenta un cambio con el req y h
-        handler: (req, h) => {
-          // permite especificar el codio
-         // return h.response('Hola mundo ...').code(200)
-            return h.view('index', {
-              title: 'home'
-            })
-        }
-      }) 
-     // ## Ruta para registro
-      server.route({
-        method: 'GET',
-        path: '/register',
-        handler: (req, h) => {
-            return h.view('register', {
-              title: 'Registro'
-            })
-        }
-      })
-      // ## Ruta para crear un Usuario
-      server.route({
-        method: 'POST',
-        path: '/create-user',
-        handler: (req, h) => {
-          console.log(req.payload)
-          return 'La vista esta creada'
-        }
-      })
-
-      server.route({
-        method: 'GET',
-        // Ruta comodin 
-        path: '/{param*}',
-        // El metodo enfrenta un cambio con el req y h
-        handler: {
-              //function 
-            directory: {
-                path: '.',
-                index: ['index.html']
-            }
-        }
-      })
+    //Le imformamos al servidor que ruta utilizamos
+    server.route(routes)
+    
     await server.start()
   } catch (error) {
     console.error(error)
