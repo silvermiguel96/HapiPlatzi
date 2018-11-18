@@ -20,12 +20,14 @@ module.exports = [
     path: '/create-user',
     method: 'POST',
     options:{
-      validate: {
+      // Al poseeer las validaciones procedemos a generar los errores
+      validate: { 
         payload: {
           name: Joi.string().required().min(3),
           email: Joi.string().email().required(),
           password: Joi.string().required().min(6)
-        }
+        },
+        failAction: user.failValidation
       }
     },
     handler: user.createUser
@@ -47,11 +49,12 @@ module.exports = [
     path: '/validate-user',
     method: 'POST',
     options: {
-      validate: {
+      validate: { 
         payload: {
           email: Joi.string().email().required(),
           password: Joi.string().required().min(6)
-        }
+        },
+        failAction: user.failValidation
       }
     },
     handler: user.validateUser
