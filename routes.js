@@ -16,7 +16,8 @@ module.exports = [
     handler: site.register
   },
   // ## Ruta para crear un Usuario
-  {
+  { 
+    path: '/create-user',
     method: 'POST',
     options:{
       validate: {
@@ -27,10 +28,34 @@ module.exports = [
         }
       }
     },
-    path: '/create-user',
     handler: user.createUser
   },
-
+  // Ingreso al aplicativo
+  {
+    method: 'GET',
+    path: '/login',
+    handler: site.login
+  },
+  // Cierre del aplicativo
+  {
+    method: 'GET',
+    path: '/logout',
+    handler: user.logout
+  },
+  // Validar usuario
+  {
+    path: '/validate-user',
+    method: 'POST',
+    options: {
+      validate: {
+        payload: {
+          email: Joi.string().email().required(),
+          password: Joi.string().required().min(6)
+        }
+      }
+    },
+    handler: user.validateUser
+  },
   {
     method: 'GET',
     // Ruta comodin 
