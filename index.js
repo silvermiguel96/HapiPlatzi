@@ -5,6 +5,7 @@ const handlerbars = require('handlebars')
 const inert = require('inert')
 const path = require('path')
 const routes = require('./routes')
+const site = require('./controllers/site')
 const vision = require('vision')
 
 const server = Hapi.server({
@@ -42,6 +43,10 @@ async function init () {
       layoutPath: 'views'
 
     })
+
+    // Antes de registar las rutas , debemos registar la interseccion
+    // Nos analizar antes de que se envien las respuestas
+    server.ext('onPreResponse', site.fileNotFound)
     // Le imformamos al servidor que ruta utilizamos
     server.route(routes)
 
