@@ -1,5 +1,5 @@
 'use strict'
-const Joi  = require('joi')
+const Joi = require('joi')
 const site = require('./controllers/site')
 const user = require('./controllers/user')
 module.exports = [
@@ -9,19 +9,19 @@ module.exports = [
     // El metodo enfrenta un cambio con el req y h
     handler: site.home
   },
- // ## Ruta para registro
+  // ## Ruta para registro
   {
     method: 'GET',
     path: '/register',
     handler: site.register
   },
   // ## Ruta para crear un Usuario
-  { 
+  {
     path: '/create-user',
     method: 'POST',
-    options:{
+    options: {
       // Al poseeer las validaciones procedemos a generar los errores
-      validate: { 
+      validate: {
         payload: {
           name: Joi.string().required().min(3),
           email: Joi.string().email().required(),
@@ -49,7 +49,7 @@ module.exports = [
     path: '/validate-user',
     method: 'POST',
     options: {
-      validate: { 
+      validate: {
         payload: {
           email: Joi.string().email().required(),
           password: Joi.string().required().min(6)
@@ -61,15 +61,20 @@ module.exports = [
   },
   {
     method: 'GET',
-    // Ruta comodin 
-    path: '/{param*}',
+    // Ruta comodin
+    path: '/assets/{param*}',
     // El metodo enfrenta un cambio con el req y h
     handler: {
-          //function 
-        directory: {
-            path: '.',
-            index: ['index.html']
-        }
+      // function
+      directory: {
+        path: '.',
+        index: ['index.html']
+      }
     }
+  },
+  {
+    method: ['GET', 'POST'],
+    path: '/{any*}',
+    handler: site.notFound
   }
 ]

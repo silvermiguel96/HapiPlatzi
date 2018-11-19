@@ -13,40 +13,38 @@ const server = Hapi.server({
   host: 'localhost',
   // definir el objeto de las rutas
   routes: {
-      files: {
-          relativeTo: path.join(__dirname , 'public')
-      }
+    files: {
+      relativeTo: path.join(__dirname, 'public')
+    }
   }
 })
 
 async function init () {
-  
   try {
-
-      // funcion de abuelo para el register
+    // funciónn de abuelo para el register
     await server.register(inert)
     await server.register(vision)
 
     server.state('user', {
-        ttl: 1000 * 60 * 60 * 24 * 7 ,
-        isSecure: process.env.NODE_ENV === 'prod' , // Nos informa si la ruta es segura
-        encoding: 'base64json'
+      ttl: 1000 * 60 * 60 * 24 * 7,
+      isSecure: process.env.NODE_ENV === 'prod', // Nos informa si la ruta es segura
+      encoding: 'base64json'
     })
 
     server.views({
-        engines: {
-            // hbs es una propiedad de engines en vision 
-            hbs: handlerbars
-        },
-        relativeTo: __dirname, // Llamar la libreria fuera de public
-        path: 'views',
-        layout: true, // no repetir las vistas
-        layoutPath: 'views'
-        
+      engines: {
+        // hbs es una propiedad de engines en vision
+        hbs: handlerbars
+      },
+      relativeTo: __dirname, // Llamar la libreria fuera de public
+      path: 'views',
+      layout: true, // no repetir las vistas
+      layoutPath: 'views'
+
     })
-    //Le imformamos al servidor que ruta utilizamos
+    // Le imformamos al servidor que ruta utilizamos
     server.route(routes)
-    
+
     await server.start()
   } catch (error) {
     console.error(error)
@@ -56,10 +54,11 @@ async function init () {
 }
 
 process.on('unhandledRejection', error => {
-    console.error('unhandledRejection', error.message, error)
+  console.error('unhandledRejection', error.message, error)
 })
 
 process.on('unhandledException', error => {
-    console.error('unhandledException' , error.message, error)
+  console.error('unhandledException', error.message, error)
 })
+
 init()
