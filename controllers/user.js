@@ -1,6 +1,6 @@
 'use strict'
 
-const Boom = require('boom')
+// const Boom = require('boom')
 const users = require('../model/index').users
 
 async function createUser (req, h) {
