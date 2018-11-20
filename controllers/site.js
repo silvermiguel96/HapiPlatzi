@@ -1,11 +1,19 @@
 'use strict'
 
-function home (req, h) {
+const questions = require('../model/index').questions
+ async function home (req, h) {
+   let data
+   try {
+     data = await questions.getLast(10)
+   } catch (error) {
+     console.error(error)
+   }
   // permite especificar el codio
   // return h.response('Hola mundo ...').code(200)
   return h.view('index', {
     title: 'home',
-    user: req.state.user
+    user: req.state.user,
+    questions: data
   })
 }
 function register (req, h) {
