@@ -45,6 +45,11 @@ module.exports = [
     path: '/logout',
     handler: user.logout
   },
+  {
+    method: 'GET',
+    path: '/question/{id}',
+    handler: site.viewQuestion
+  },
   // Preguntas
   {
     method: 'GET',
