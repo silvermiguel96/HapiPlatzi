@@ -8,6 +8,11 @@ const routes = require('./routes')
 const site = require('./controllers/site')
 const vision = require('vision')
 
+handlerbars.registerHelper('answerNumber', (answers) => {
+  const keys = Object.keys(answers)
+  return keys.length
+})
+
 const server = Hapi.server({
   // proccess es una parametro que podemos mandar por defecto
   port: process.env.PORT || 3000,

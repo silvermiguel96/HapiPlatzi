@@ -87,6 +87,21 @@ module.exports = [
     },
     handler: question.createQuestion
   },
+  // Ruta para responder las preguntas
+  {
+    path: '/answer-question',
+    method: 'POST',
+    options: {
+      validate: {
+        payload: {
+          answer: Joi.string().required(),
+          id: Joi.string().required()
+        },
+        failAction: user.failValidation
+      }
+    },
+    handler: question.answerQuestion
+  },
   {
     method: 'GET',
     // Ruta comodin
