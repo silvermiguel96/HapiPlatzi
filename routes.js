@@ -102,6 +102,12 @@ module.exports = [
     },
     handler: question.answerQuestion
   },
+  // Ruta para la respuesta correcta
+  {
+    method: 'GET',
+    path: '/answer/{questionId}/{answerId}',
+    handler: question.setAnswerRight
+  },
   {
     method: 'GET',
     // Ruta comodin

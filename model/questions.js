@@ -33,7 +33,7 @@ class Questions {
     return answers
   }
   // Metodo
-  async setAnswerRight (questionId, answerId, user){
+  async setAnswerRight (questionId, answerId, user) {
     // Id de la pregunta 
   const query = await this.collection.child(questionId).once('value')
   const question = query.val()
@@ -49,5 +49,6 @@ class Questions {
   
   const update = await this.collection.child(questionId).child('answers').update(answers)
   return update 
+}
 }
 module.exports = Questions

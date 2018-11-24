@@ -3,6 +3,9 @@
 const questions = require('../model/index').questions
 
 async function createQuestion (req, h) {
+  if (!req.state.user) {
+    return h.redirect('/login')
+  }
   let result
 
   try {
@@ -21,6 +24,9 @@ async function createQuestion (req, h) {
 }
 
 async function answerQuestion (req, h) {
+  if (!req.state.user) {
+    return h.redirect('/login')
+  }
   let result
   try {
     result = await questions.answer(req.payload, req.state.user)
@@ -31,7 +37,23 @@ async function answerQuestion (req, h) {
 
   return h.redirect(`/question/${req.payload.id}`)
 }
+
+async function setAnswerRight (req, h) {
+  if (!req.state.user) {
+    return h.redirect('/login')
+  }
+  let result
+  try {
+    // Ejecutar el metodo como tal
+    result = await req.server.methods.setAnswerRight(req.params.questionId, req.params.answerId, req.state.user)
+    console.log(result)
+  } catch (error) {
+    console.error(error)
+  }
+  return h.redirect(`/question/${req.params.questionId}`)
+}
 module.exports = {
   createQuestion: createQuestion,
-  answerQuestion: answerQuestion
+  answerQuestion: answerQuestion,
+  setAnswerRight: setAnswerRight
 }
