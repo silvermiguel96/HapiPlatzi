@@ -7,6 +7,12 @@ module.exports = [
   {
     method: 'GET',
     path: '/',
+    options: {
+      cache: {
+        expiresIn: 1000 * 30,
+        privacy: 'private'
+      }
+    },
     // El metodo enfrenta un cambio con el req y h
     handler: site.home
   },

@@ -2,12 +2,9 @@
 
 const questions = require('../model/index').questions
 async function home (req, h) {
-  let data
-  try {
-    data = await questions.getLast(10)
-  } catch (error) {
-    console.error(error)
-  }
+  // Los methodos del servidor los accedesmos desde el req
+  const data = await req.server.methods.getLast(10)
+
   // permite especificar el codio
   // return h.response('Hola mundo ...').code(200)
   return h.view('index', {

@@ -3,7 +3,7 @@
 const Hapi = require('hapi')
 const handlerbars = require('./lib/helpers')
 const inert = require('inert')
-const method = require('./lib/methods')
+const methods = require('./lib/methods')
 const path = require('path')
 const routes = require('./routes')
 const site = require('./controllers/site')
@@ -26,8 +26,14 @@ async function init () {
     // funciónn de abuelo para el register
     await server.register(inert)
     await server.register(vision)
-    // 
-    server.method('setAnswerRight', method.setAnswerRight)
+    // Resive los methos qu vamos a manejar en el servidor
+    server.method('setAnswerRight', methods.setAnswerRight)
+    server.method('getLast', methods.getLast, {
+      cache: {
+        expiresIn: 1000 * 60,
+        generateTimeout: 2000
+      }
+    })
     server.state('user', {
       ttl: 1000 * 60 * 60 * 24 * 7,
       isSecure: process.env.NODE_ENV === 'prod', // Nos informa si la ruta es segura
