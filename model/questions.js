@@ -7,8 +7,16 @@ class Questions {
     this.collection = this.ref.child('questions')
   }
 
-  async create (data, user) {
-    data.owner = user
+  async create (info, user, filename) {
+    const data = {
+      description: info.description,
+      title: info.title,
+      owner: user
+    }
+
+    if (filename) {
+      data.filename = filename
+    }
     const question = this.collection.push() // Crear nueva referencia
     question.set(data)
 
