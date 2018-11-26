@@ -3,6 +3,7 @@
 const Hapi = require('hapi')
 const handlerbars = require('./lib/helpers')
 const inert = require('inert')
+const good = require('good')
 const methods = require('./lib/methods')
 const path = require('path')
 const routes = require('./routes')
@@ -26,6 +27,21 @@ async function init () {
     // funciónn de abuelo para el register
     await server.register(inert)
     await server.register(vision)
+    // Sintasis para registrar un Plugin: Objeto
+    await server.register({
+      plugin: good,
+      options: {
+        // Propiedades para definir los trarportes
+        reporters: {
+          console: [
+            {
+              module: 'good-console'
+            },
+            'stdout'
+          ]
+        }
+      }
+    })
     // Resive los methos qu vamos a manejar en el servidor
     server.method('setAnswerRight', methods.setAnswerRight)
     server.method('getLast', methods.getLast, {
@@ -63,15 +79,16 @@ async function init () {
     console.error(error)
     console.exit(1)
   }
-  console.log(`El Servidor corriendo en  : ${server.info.uri}`)
+  server.log('info', `El Servidor corriendo en  : ${server.info.uri}`)
 }
 
 process.on('unhandledRejection', error => {
-  console.error('unhandledRejection', error.message, error)
+  // console.error('unhandledRejection', error.message, error)
+  server.log('unhandledRejection', error)
 })
 
 process.on('unhandledException', error => {
-  console.error('unhandledException', error.message, error)
+  server.log('unhandledException', error)
 })
 
 init()
