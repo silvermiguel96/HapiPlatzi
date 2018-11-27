@@ -1,6 +1,7 @@
 'use strict'
 
 const Hapi = require('hapi')
+const crumb = require('crumb')
 const handlerbars = require('./lib/helpers')
 const inert = require('inert')
 const good = require('good')
@@ -43,6 +44,15 @@ async function init () {
       }
     })
 
+    //  Asegurando el servidor contra CSRF
+    await server.register({
+      plugin: crumb,
+      options: {
+        cookieOptions: {
+          isSecure: process.env.NODE_ENV === 'prod'
+        }
+      }
+    })
     //  Creación de plugins - Implementando un API REST
     await server.register({
       plugin: require('./lib/api'),
