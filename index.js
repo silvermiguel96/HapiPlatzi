@@ -42,6 +42,15 @@ async function init () {
         }
       }
     })
+
+    //  Creación de plugins - Implementando un API REST
+    await server.register({
+      plugin: require('./lib/api'),
+      options: {
+        prefix: 'api'
+      }
+    })
+
     // Resive los methos qu vamos a manejar en el servidor
     server.method('setAnswerRight', methods.setAnswerRight)
     server.method('getLast', methods.getLast, {
