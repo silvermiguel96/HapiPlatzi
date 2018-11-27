@@ -1,6 +1,7 @@
 'use strict'
 
 const Hapi = require('hapi')
+const blankie = require('blankie')
 const crumb = require('crumb')
 const handlerbars = require('./lib/helpers')
 const inert = require('inert')
@@ -8,6 +9,7 @@ const good = require('good')
 const methods = require('./lib/methods')
 const path = require('path')
 const routes = require('./routes')
+const scooter = require('scooter')
 const site = require('./controllers/site')
 const vision = require('vision')
 
@@ -60,6 +62,20 @@ async function init () {
         prefix: 'api'
       }
     })
+
+    // seguridad básica - Asegurando el servidor contra XSS
+
+    await server.register([scooter, {
+      plugin: blankie,
+      options: {
+        defaultSrc: `'self' 'unsafe-inline' `,
+        styleSrc: `'self' 'unsafe-inline' https://maxcdn.bootstrapcdn.com`,
+        fontSrc: `'self' 'unsafe-inline' data:`,
+        scriptSrc: `'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://maxcdn.bootstrapcdn.com https://code.jquery.com`,
+        // Generar Anotacion de nuestro codigo
+        generateNonces: false
+      }
+    }])
 
     // Resive los methos qu vamos a manejar en el servidor
     server.method('setAnswerRight', methods.setAnswerRight)
